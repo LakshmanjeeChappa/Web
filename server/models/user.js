@@ -1,46 +1,34 @@
-const db = require('./db_connect');
+const db = require('../db_connect');
 
-// Get all users
-function getAllUsers(callback) {
-    db.query('SELECT * FROM USER', (err, results) => {
-        if (err) return callback(err, null);
-        callback(null, results);
-    });
-}
+const createUser = (user, callback) => {
+  const { name, email, password } = user;
+  db.query(
+    'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
+    [name, email, password],
+    callback
+  );
+};
 
-// Create a new user
-function createUser(user, callback) {
-    const { FullName, FirstName, LastName, Email, Password } = user;
-    db.query(
-        'INSERT INTO USER (FullName, FirstName, LastName, Email, Password) VALUES (?, ?, ?, ?, ?)',
-        [FullName, FirstName, LastName, Email, Password],
-        (err, results) => {
-            if (err) return callback(err, null);
-            callback(null, results);
-        }
-    );
-}
+const getUserById = (id, callback) => {
+  db.query('SELECT * FROM users WHERE id = ?', [id], callback);
+};
 
-// Update an existing user
-function updateUser(id, updatedUser, callback) {
-    const { FullName, FirstName, LastName, Email } = updatedUser;
-    db.query(
-        'UPDATE USER SET FullName = ?, FirstName = ?, LastName = ?, Email = ? WHERE USERID = ?',
-        [FullName, FirstName, LastName, Email, id],
-        (err, results) => {
-            if (err) return callback(err, null);
-            callback(null, results);
-        }
-    );
-}
+const updateUser = (id, user, callback) => {
+  const { name, email, password } = user;
+  db.query(
+    'UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?',
+    [name, email, password, id],
+    callback
+  );
+};
 
-// Delete a user
-function deleteUser(id, callback) {
-    db.query('DELETE FROM USER WHERE USERID = ?', [id], (err, results) => {
-        if (err) return callback(err, null);
-        callback(null, results);
-    });
-}
+const deleteUser = (id, callback) => {
+  db.query('DELETE FROM users WHERE id = ?', [id], callback);
+};
 
-module.exports = { getAllUsers, createUser, updateUser, deleteUser };
-
+module.exports = {
+  createUser,
+  getUserById,
+  updateUser,
+  deleteUser,
+};

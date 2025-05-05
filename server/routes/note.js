@@ -1,40 +1,35 @@
-const express = require('express');
-const router = express.Router();
-const noteModel = require('../models/note');
+document.addEventListener('DOMContentLoaded', function () {
+    const noteForm = document.querySelector('form');
 
-// Get all notes
-router.get('/', (req, res) => {
-    noteModel.getAllNotes((err, notes) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(notes);
+    noteForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        
+        const noteContent = document.getElementById('postContent').value;
+
+        const note = {
+            content: noteContent,
+            user_id: 1 // You can later replace this with the actual logged-in user ID
+        };
+
+        try {
+            const response = await fetch('http://localhost:3000/api/note', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(note)
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                alert('Note submitted successfully!');
+                noteForm.reset();
+            } else {
+                alert('Error: ' + result.error);
+            }
+        } catch (err) {
+            console.error('Fetch error:', err);
+            alert('Something went wrong while submitting the note!');
+        }
     });
 });
-
-// Create a new note
-router.post('/', (req, res) => {
-    noteModel.createNote(req.body, (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.status(201).json({ message: 'Note created successfully', id: result.insertId });
-    });
-});
-
-// Update a note
-router.put('/:id', (req, res) => {
-    const noteId = req.params.id;
-    noteModel.updateNote(noteId, req.body, (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: 'Note updated successfully' });
-    });
-});
-
-// Delete a note
-router.delete('/:id', (req, res) => {
-    const noteId = req.params.id;
-    noteModel.deleteNote(noteId, (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: 'Note deleted successfully' });
-    });
-});
-
-module.exports = router;
-

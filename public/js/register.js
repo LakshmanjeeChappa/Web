@@ -1,19 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const registrationform = document.querySelector('form');
+    const registrationForm = document.querySelector('form');
 
-    registrationform.addEventListener('submit', function (event) {
-        event.preventDefault(); 
-        
-      
+    registrationForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
         const userfirstname = document.getElementById('fname').value;
         const userlastname = document.getElementById('lname').value;
         const email = document.getElementById('username').value;
         const password = document.getElementById('password').value;
-
-        console.log("User_firstName:", userfirstname);
-        console.log("User_lastName:", userlastname);
-        console.log("emailAdress:", email);
-        console.log("password:", password);
 
         const user = {
             firstName: userfirstname,
@@ -22,6 +16,25 @@ document.addEventListener('DOMContentLoaded', function () {
             passwd: password
         };
 
-        console.log("New_Registered_User:", user);
+        try {
+            const response = await fetch('http://localhost:3000/api/user/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                alert('Registration successful! User ID: ' + result.userId);
+                registrationForm.reset();
+            } else {
+                alert('Error: ' + result.error);
+            }
+        } catch (err) {
+            console.error('Fetch error:', err);
+            alert('Something went wrong while registering!');
+        }
     });
 });

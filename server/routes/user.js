@@ -1,39 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const userModel = require('../models/user');
+const userController = require('../controllers/userController');
 
-// Get all users
-router.get('/', (req, res) => {
-    userModel.getAllUsers((err, users) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(users);
-    });
-});
-
-// Create a new user
-router.post('/', (req, res) => {
-    userModel.createUser(req.body, (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.status(201).json({ message: 'User created successfully', id: result.insertId });
-    });
-});
-
-// Update a user
-router.put('/:id', (req, res) => {
-    const userId = req.params.id;
-    userModel.updateUser(userId, req.body, (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: 'User updated successfully' });
-    });
-});
-
-// Delete a user
-router.delete('/:id', (req, res) => {
-    const userId = req.params.id;
-    userModel.deleteUser(userId, (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: 'User deleted successfully' });
-    });
-});
+router.post('/register', userController.registerUser);
+router.post('/login', userController.loginUser); // ✅ Add this line
+router.get('/:id', userController.getUser);
+router.put('/:id', userController.updateUser);
+router.delete('/:id', userController.deleteUser);
 
 module.exports = router;

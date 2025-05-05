@@ -1,48 +1,39 @@
-const db = require('./db_connect');
+const db = require('../db_connect');
 
-// Get all notes
-function getAllNotes(callback) {
-    db.query('SELECT * FROM NOTE', (err, results) => {
-        if (err) return callback(err, null);
-        callback(null, results);
-    });
-}
+const createNote = (note, callback) => {
+  const { title, content, user_id, section_id } = note;
+  db.query(
+    'INSERT INTO notes (title, content, user_id, section_id) VALUES (?, ?, ?, ?)',
+    [title, content, user_id, section_id],
+    callback
+  );
+};
 
-// Create a new note
-function createNote(note, callback) {
-    const { Title, Content, USERID, SECTIONID } = note;
-    db.query(
-        'INSERT INTO NOTE (Title, Content, USERID, SECTIONID) VALUES (?, ?, ?, ?)',
-        [Title, Content, USERID, SECTIONID],
-        (err, results) => {
-            if (err) return callback(err, null);
-            callback(null, results);
-        }
-    );
-}
+const getNoteById = (id, callback) => {
+  db.query('SELECT * FROM notes WHERE id = ?', [id], callback);
+};
 
-// Update a note
-function updateNote(id, updatedNote, callback) {
-    const { Title, Content } = updatedNote;
-    db.query(
-        'UPDATE NOTE SET Title = ?, Content = ? WHERE NOTEID = ?',
-        [Title, Content, id],
-        (err, results) => {
-            if (err) return callback(err, null);
-            callback(null, results);
-        }
-    );
-}
+const getAllNotesByUser = (user_id, callback) => {
+  db.query('SELECT * FROM notes WHERE user_id = ?', [user_id], callback);
+};
 
-// Delete a note
-function deleteNote(id, callback) {
-    db.query('DELETE FROM NOTE WHERE NOTEID = ?', [id], (err, results) => {
-        if (err) return callback(err, null);
-        callback(null, results);
-    });
-}
+const updateNote = (id, note, callback) => {
+  const { title, content } = note;
+  db.query(
+    'UPDATE notes SET title = ?, content = ? WHERE id = ?',
+    [title, content, id],
+    callback
+  );
+};
 
-module.exports = { getAllNotes, createNote, updateNote, deleteNote };
+const deleteNote = (id, callback) => {
+  db.query('DELETE FROM notes WHERE id = ?', [id], callback);
+};
 
-
-
+module.exports = {
+  createNote,
+  getNoteById,
+  getAllNotesByUser,
+  updateNote,
+  deleteNote,
+};
