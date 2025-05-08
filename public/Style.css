@@ -44,7 +44,9 @@ h1{
     }
     
      body{
-        
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
         background-position: center;
         background-size: cover;
         height: 600px; 
@@ -62,6 +64,87 @@ h1{
         left: 550px;    
     }
 
+
+
+    #notesList {
+        width: 60%;
+        margin: 20px auto;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 15px;
+        border-radius: 10px;
+        font-family: Arial, sans-serif;
+    }
     
+    #showNotesBtn {
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 20px;
+    }
     
+    .editable {
+        outline: none;
+        padding: 5px;
+    }
     
+    .editable:hover {
+        background-color: #eef;
+        cursor: text;
+    }
+    
+    button {
+        margin: 5px;
+    }
+    
+  
+    .page1, .page2, .page3 {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh;
+    }
+
+    body.page1 form
+   {
+    left: auto;
+    position: static;
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px gray;
+    margin-bottom: 20px;
+    margin-top: 120px;
+    margin-left: 500px;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+
+    body.page2 form {
+    left: auto;
+    position: static;
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px gray;
+    margin-bottom: 20px;
+    margin-top: 120px;
+    margin-left: 630px;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+    
+body.page1 h1,
+body.page2 h1 {
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+    
+

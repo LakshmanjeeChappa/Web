@@ -1,42 +1,62 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const noteform = document.querySelector('form');
+const userId = localStorage.getItem('userId');
+const noteForm = document.getElementById('noteForm');
+const notesList = document.getElementById('notesList');
 
-    noteform.addEventListener('submit', async function (event) {
-        event.preventDefault(); 
+noteForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const title = document.getElementById('title').value.trim();
+  const content = document.getElementById('postContent').value.trim();
 
-        const noteContent = document.getElementById('postContent').value.trim();
-        const userId = localStorage.getItem('userId');
+  const res = await fetch('/api/notes', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_id: userId, title, content })
+  });
 
-        if (!userId) {
-            alert('Please register or log in first.');
-            return;
-        }
-
-        try {
-            const response = await fetch('http://localhost:3000/api/notes', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    title: 'Untitled Note',
-                    content: noteContent,
-                    user_id: userId
-                })
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                alert('Note saved successfully!');
-                noteform.reset();
-            } else {
-                alert('Note save failed: ' + result.message);
-            }
-        } catch (error) {
-            console.error('Error submitting note:', error);
-            alert('Could not connect to the server');
-        }
-    });
+  if (res.ok) {
+    alert('Note saved');
+    noteForm.reset();
+    loadNotes();
+  } else {
+    alert('Failed to save note');
+  }
 });
+
+async function loadNotes() {
+  const res = await fetch(`/api/notes/${userId}`);
+  const notes = await res.json();
+  notesList.innerHTML = '';
+  notes.forEach(note => {
+    notesList.innerHTML += `
+      <div>
+        <h3 contenteditable="true" class="editable" data-id="${note.NOTEID}" data-field="title">${note.Title}</h3>
+        <p contenteditable="true" class="editable" data-id="${note.NOTEID}" data-field="content">${note.Content}</p>
+        <button onclick="updateNote(${note.NOTEID})">Save</button>
+        <button onclick="deleteNote(${note.NOTEID})">Delete</button>
+        <hr>
+      </div>
+    `;
+  });
+}
+
+async function deleteNote(id) {
+  if (confirm('Delete this note?')) {
+    await fetch(`/api/notes/${id}`, { method: 'DELETE' });
+    loadNotes();
+  }
+}
+
+async function updateNote(id) {
+  const title = document.querySelector(`.editable[data-id="${id}"][data-field="title"]`).innerText.trim();
+  const content = document.querySelector(`.editable[data-id="${id}"][data-field="content"]`).innerText.trim();
+  await fetch(`/api/notes/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title, content })
+  });
+  loadNotes();
+}
+
+window.onload = loadNotes;
+
 

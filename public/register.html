@@ -1,46 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="page11">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link rel="stylesheet" href="Style.css">
+  <title>Register</title>
+  <link rel="stylesheet" href="Style.css">
 </head>
 <body class="page1">
-
- <h1 class="page11">Sign Up</h1>
-
-
+    
     <nav class="page111">
-        <a href="register.html">Register</a>
-        
-        <a href="login.html">Login</a>
-        
-        <a href="note.html">Note</a>
-    </nav>
-    <hr>
-
-    
-    <form>
-        <label for="fname">First Name:</label><br>
-        <input type="text" id="fname" name="fname"><br>
-       
-
-        <label for="lname">Last Name:</label><br>
-        <input type="text" id="lname" name="lname"><br>
-        
-
-        <label for="username">Email:</label><br>
-        <input type="text" id="username" name="username"><br>
-        
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password"><br>
-
-        <input type="submit" value="Sign Up">
-    </form>
-    
-    <script src="js/register.js"></script>
-
-
+    <a href="register.html">Register</a>
+    <a href="login.html">Login</a>
+    <a href="note.html">Notes</a>
+  </nav>
+  <h1>Register</h1>
+  <form id="registerForm">
+    <input type="text" id="fname" placeholder="First Name" required><br>
+    <input type="text" id="lname" placeholder="Last Name" required><br>
+    <input type="email" id="username" placeholder="Email" required><br>
+    <input type="password" id="password" placeholder="Password" required><br>
+    <button type="submit">Register</button>
+  </form>
+  <script src="js/register.js" defer></script>
 </body>
 </html>

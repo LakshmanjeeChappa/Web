@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (response.ok) {
                 alert('Login successful!');
-                localStorage.setItem('userId', result.id); // Save user ID
+                localStorage.setItem('userId', result.id);
                 window.location.href = 'note.html';
             } else {
                 alert('Login failed: ' + result.message);

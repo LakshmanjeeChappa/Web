@@ -1,33 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="page22">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="Style.css">
+  <title>Login</title>
+  <link rel="stylesheet" href="Style.css">
 </head>
+
 <body class="page2">
-
-    <h1 class="page22">Login</h1>
-
     <nav class="page222">
-        <a href="register.html">Register</a>
-        <a href="login.html">Login</a>
-        <a href="note.html">Note</a>
-    </nav>
-
-    <hr>
-
-    <form>
-        <label for="username">Email:</label><br>
-        <input type="text" id="username" name="username"><br>
-
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password"><br>
-
-        <input type="submit" value="Login">
-    </form>
-
-    <script src="js/login.js"></script>
+    <a href="register.html">Register</a>
+    <a href="login.html">Login</a>
+    <a href="note.html">Notes</a>
+  </nav>
+  <h1>Login</h1>
+  <form id="loginForm">
+    <input type="email" id="username" placeholder="Email" required><br>
+    <input type="password" id="password" placeholder="Password" required><br>
+    <button type="submit">Login</button>
+  </form>
+  <script src="js/login.js" defer></script>
 </body>
 </html>
